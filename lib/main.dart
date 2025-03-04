@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'movie.dart';
 import 'movie_form.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'catalog_page.dart';
 import 'database_helper.dart';
 
@@ -14,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Meus Filmes',
-      home: MyHomePage(), // Usando MyHomePage como tela inicial
+      home: MyHomePage(),
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.red,
@@ -27,9 +25,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        drawerTheme: DrawerThemeData(
-          backgroundColor: Colors.grey[850],
-        ),
+        drawerTheme: DrawerThemeData(backgroundColor: Colors.grey[850]),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red[800],
@@ -62,7 +58,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final dbHelper = DatabaseHelper(); // Instancia o DatabaseHelper aqui
+    final dbHelper = DatabaseHelper();
     return Scaffold(
       appBar: AppBar(title: Text('Meus Filmes')),
       drawer: Drawer(
@@ -83,7 +79,9 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MovieForm()),
+                  MaterialPageRoute(
+                    builder: (context) => MovieForm(dbHelper: dbHelper),
+                  ),
                 );
               },
             ),
@@ -95,7 +93,8 @@ class MyHomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CatalogPage(dbHelper: dbHelper)), // Passa dbHelper
+                    builder: (context) => CatalogPage(dbHelper: dbHelper),
+                  ),
                 );
               },
             ),
@@ -103,63 +102,46 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: <Widget>[
-
             Image.asset('assets/icon.png', height: 50),
 
             SizedBox(height: 40),
 
             ElevatedButton(
-
               onPressed: () {
-
                 Navigator.push(
-
                   context,
 
-                  MaterialPageRoute(builder: (context) => MovieForm()),
-
+                  MaterialPageRoute(
+                    builder: (context) => MovieForm(dbHelper: dbHelper),
+                  ),
                 );
-
               },
 
               child: Text('Cadastrar Filme'),
-
             ),
 
             SizedBox(height: 20),
 
             ElevatedButton(
-
               onPressed: () {
-
                 Navigator.push(
-
                   context,
 
-                  MaterialPageRoute(builder: (context) => CatalogPage(dbHelper: dbHelper)),
-
+                  MaterialPageRoute(
+                    builder: (context) => CatalogPage(dbHelper: dbHelper),
+                  ),
                 );
-
               },
 
               child: Text('Lista de Filmes'),
-
             ),
-
           ],
-
         ),
-
       ),
-
     );
-
   }
-
 }

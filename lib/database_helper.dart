@@ -16,17 +16,21 @@ class DatabaseHelper {
     String? databasesPath = await getDatabasesPath();
     databasesPath ??= "";
     String path = join(databasesPath, "movies.db");
-    return await openDatabase(path, version: 1,
-        onCreate: (Database db, int newerVersion) async {
-          await db.execute(
-              "CREATE TABLE ${MovieContract.movieTable}(${MovieContract.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT, "
-                  " ${MovieContract.titleColumn} TEXT, "
-                  " ${MovieContract.directorColumn} TEXT, "
-                  " ${MovieContract.yearColumn} INTEGER, "
-                  " ${MovieContract.synopsisColumn} TEXT, "
-                  " ${MovieContract.ratingColumn} REAL, "
-                  " ${MovieContract.posterUrlColumn} TEXT)");
-        });
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (Database db, int newerVersion) async {
+        await db.execute(
+          "CREATE TABLE ${MovieContract.movieTable}(${MovieContract.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT, "
+          " ${MovieContract.titleColumn} TEXT, "
+          " ${MovieContract.directorColumn} TEXT, "
+          " ${MovieContract.yearColumn} INTEGER, "
+          " ${MovieContract.synopsisColumn} TEXT, "
+          " ${MovieContract.ratingColumn} REAL, "
+          " ${MovieContract.posterUrlColumn} TEXT)",
+        );
+      },
+    );
   }
 
   Future<int> insertMovie(Movie movie) async {
@@ -36,8 +40,9 @@ class DatabaseHelper {
 
   Future<List<Movie>> getMovies() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps =
-    await db.query(MovieContract.movieTable);
+    final List<Map<String, dynamic>> maps = await db.query(
+      MovieContract.movieTable,
+    );
     return List.generate(maps.length, (i) {
       return Movie.fromMap(maps[i]);
     });
